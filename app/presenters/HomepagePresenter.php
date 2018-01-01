@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @author Tomáš Keske
- */
+* @author Tomáš Keske
+*/
 
 namespace App\Presenters;
 
@@ -10,7 +10,7 @@ use App\Counter;
 
 class HomepagePresenter extends BasePresenter
 {
-    public function startup(){
+	public function startup(){
 		parent::startup();
 
 		//counter návštěv
@@ -20,17 +20,16 @@ class HomepagePresenter extends BasePresenter
 
 		$this->em->persist($pocitadlo);
 		$this->em->flush();
-    }
+	}
 
-    public function actionLogout(){
-        $this->getUser()->logout(true);
+	public function actionLogout(){
+		$this->getUser()->logout(true);
 
-        $this->flashMessage("Byl jste úspěšně odhlášen.");
-        $this->redirect("Homepage:default");
-    }
+		$this->flashMessage("Byl jste úspěšně odhlášen.");
+		$this->redirect("Homepage:default");
+	}
 
-	public function renderDefault($page = 1)
-	{	
+	public function renderDefault($page = 1){	
 		//render článků pro úvodní stránku
 		$clanky = $this->em->getRepository('App\Article')->findAll();
 
@@ -42,8 +41,8 @@ class HomepagePresenter extends BasePresenter
 		$paginator->setPage($page);
 
 		$clanky = $this->em->createQuery('SELECT a FROM App\Article a ORDER BY a.id DESC')
-					->setFirstResult($paginator->getOffset())
-		       		->setMaxResults($paginator->getLength())->getResult();
+							->setFirstResult($paginator->getOffset())
+       						->setMaxResults($paginator->getLength())->getResult();
 
 		$this->template->count = $count;
 		$this->template->clanky = $clanky;
@@ -52,8 +51,7 @@ class HomepagePresenter extends BasePresenter
 	}
 
 	public function helper(){
-		$posts = $this->em->createQuery('SELECT a FROM App\Article a ORDER BY a.id DESC')
-							->getResult();
+		$posts = $this->em->createQuery('SELECT a FROM App\Article a ORDER BY a.id DESC')->getResult();
 
 		$this->template->posts = $posts;
 	}
