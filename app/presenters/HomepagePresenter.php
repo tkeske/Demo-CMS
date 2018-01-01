@@ -37,15 +37,15 @@ class HomepagePresenter extends BasePresenter
 		$count = count($clanky);
 
 		$paginator = new \Nette\Utils\Paginator;
-        $paginator->setItemCount($count); // celkový počet článků
-        $paginator->setItemsPerPage(3); // počet položek na stránce
-        $paginator->setPage($page);
+		$paginator->setItemCount($count); // celkový počet článků
+		$paginator->setItemsPerPage(3); // počet položek na stránce
+		$paginator->setPage($page);
 
 		$clanky = $this->em->createQuery('SELECT a FROM App\Article a ORDER BY a.id DESC')
 					->setFirstResult($paginator->getOffset())
-               		->setMaxResults($paginator->getLength())->getResult();
+		       		->setMaxResults($paginator->getLength())->getResult();
 
-        $this->template->count = $count;
+		$this->template->count = $count;
 		$this->template->clanky = $clanky;
 		$this->template->paginator = $paginator;
 		$this->template->user = $this->getUser();
