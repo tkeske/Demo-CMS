@@ -11,13 +11,13 @@ use App\Counter;
 class HomepagePresenter extends BasePresenter
 {
     public function startup(){
-    	parent::startup();
+		parent::startup();
 
-    	//counter návštěv
-    	$pocitadlo = new Counter;
+		//counter návštěv
+		$pocitadlo = new Counter;
 		$pocitadlo->ipAdresa = $this->getHttpRequest()->remoteAddress;
 		$pocitadlo->datum = time();
-		
+
 		$this->em->persist($pocitadlo);
 		$this->em->flush();
     }

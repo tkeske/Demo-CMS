@@ -12,8 +12,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
 	/**
-     * @inject
-     * @var \Kdyby\Doctrine\EntityManager
-     */
-    public $em;
+	* @inject
+	* @var \Kdyby\Doctrine\EntityManager
+	*/
+	public $em;
 }
