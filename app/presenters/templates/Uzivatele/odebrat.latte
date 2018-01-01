@@ -1,0 +1,36 @@
+{** @author Tomáš Keske *}
+
+{layout '../Admin/default1.latte'}
+
+{block title}Odebrat uživatele{/block}
+
+{block obsah}
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+
+            {foreach $flashes as $flash}
+              <div class="alert alert-{$flash->type}">{$flash->message}</div>
+            {/foreach}
+
+            <h2>Odebrat uživatele</h2>
+
+            <table>
+              <tr>
+              <th> Jméno uživatele </th>
+              <th> Akce </th>
+              </tr>
+              
+              {foreach $usr as $us}
+                <tr><td>{$us->email}</td><td><a n:href="Uzivatele:odebrat $us->id" class="">Odebrat</a></td></tr>
+              {/foreach}
+
+            </table>
+            
+            <br>
+          </div>
+        </div>
+      </div>
+    </section>
+{/block}

@@ -1,0 +1,27 @@
+{** @author Tomáš Keske *}
+
+{layout default1.latte}
+{block title} Administrace {/block}
+{block obsah}
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+
+            {foreach $flashes as $flash}
+              <div class="alert alert-{$flash->type}">{$flash->message}</div>
+            {/foreach}
+
+            <h2>Administrace</h2>
+            <ul>
+              <li><a n:href="Admin:clanky" class="nav-link js-scroll-trigger">Články</a></li>
+              <li><a n:href="Admin:kategorie" class="nav-link js-scroll-trigger">Kategorie</a></li>
+              <li><a n:href="Komentare:default" class="nav-link js-scroll-trigger">Komentáře</a></li>
+              <li><a n:href="Admin:uzivatele" class="nav-link js-scroll-trigger">Uživatelé</a></li>
+              <li><a n:href="Counter:default" class="nav-link js-scroll-trigger">Počítadlo návštěv</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+{/block}

@@ -1,0 +1,22 @@
+{** @author Tomáš Keske *}
+
+{layout default1.latte}
+
+{block title}Správce článků{/block}
+
+{block obsah}
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>Články</h2>
+            <ul>
+              <li><a n:href="Clanky:default" class="nav-link js-scroll-trigger">Přidat článek</a></li>
+              <li><a n:href="Clanky:editovat" class="nav-link js-scroll-trigger">Editovat článek</a></li>
+              <li><a n:href="Clanky:smaz" class="nav-link js-scroll-trigger">Odebrat článek</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+{/block}
