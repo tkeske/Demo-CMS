@@ -24,7 +24,7 @@ class Obrazek extends \Kdyby\Doctrine\Entities\BaseEntity
     protected $path;
 
     /**
-     * @ORM\manyToOne(targetEntity="Article", inversedBy="obrazy", cascade="persist")
+     * @ORM\manyToOne(targetEntity="Article", inversedBy="obrazy")
      * @ORM\JoinColumn(name="ref_id", referencedColumnName="id")
      */
     protected $refe;

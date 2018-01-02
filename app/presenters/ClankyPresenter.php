@@ -98,6 +98,7 @@ class ClankyPresenter extends RestrictedPresenter
                 }
 
                 $article->setObrazy($arr);
+                $this->em->persist($arr);
             }
 
             $this->em->persist($article);

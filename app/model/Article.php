@@ -49,7 +49,7 @@ class Article extends \Kdyby\Doctrine\Entities\BaseEntity
     protected $coments;
 
     /**
-     * @ORM\oneToMany(targetEntity="Obrazek", mappedBy="refe", cascade="persist")
+     * @ORM\oneToMany(targetEntity="Obrazek", mappedBy="refe", cascade="remove")
      */
     protected $obrazy;
 
