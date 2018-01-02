@@ -39,11 +39,6 @@ class Article extends \Kdyby\Doctrine\Entities\BaseEntity
     protected $date;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    protected $obrazky;
-
-    /**
      * @ORM\manyToMany(targetEntity="Category", inversedBy="categories")
      */
     protected $category;
@@ -53,9 +48,15 @@ class Article extends \Kdyby\Doctrine\Entities\BaseEntity
      */
     protected $coments;
 
+    /**
+     * @ORM\oneToMany(targetEntity="Obrazek", mappedBy="refe", cascade="persist")
+     */
+    protected $obrazy;
+
     public function __construct(){
         $this->category = new \Doctrine\Common\Collections\ArrayCollection;
         $this->coments = new \Doctrine\Common\Collections\ArrayCollection;
+        $this->obrazy = new \Doctrine\Common\Collections\ArrayCollection;
     }
 
     public function setCategory($category){
@@ -64,6 +65,14 @@ class Article extends \Kdyby\Doctrine\Entities\BaseEntity
 
     public function setComent($coment){
         $this->coments = $coment;
+    }
+
+    public function getObrazy(){
+        return $this->obrazy;
+    }
+
+    public function setObrazy($obrazy){
+        $this->obrazy = $obrazy;
     }
 
     public function getCategory(){

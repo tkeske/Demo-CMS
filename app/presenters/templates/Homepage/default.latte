@@ -83,12 +83,12 @@
 
                 <br><br>
 
-                {if json_decode($clanek->obrazky)}
+                {if count($clanek->getObrazy()) > 0}
 
                   <b>Obrázky:</b> <br>
-                  {foreach json_decode($clanek->obrazky) as $obrazek}
-                    <a href="{$basePath}/images/{$obrazek}">
-                    <img src="{$basePath}/images/{$obrazek}" width=150; height=150;></a>
+                  {foreach $clanek->getObrazy() as $obrazek}
+                    <a href="{$basePath}/images/{$obrazek->path}">
+                    <img src="{$basePath}/images/{$obrazek->path}" width=150; height=150;></a>
                   {/foreach}
                 {/if}
           </div>

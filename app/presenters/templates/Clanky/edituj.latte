@@ -19,12 +19,12 @@
               
               <br>
 
-              {if json_decode($obrazky)}
-                {foreach json_decode($obrazky) as $obrazek}
+              {if $obrazy}
+                {foreach $obrazy as $obrazek}
                 
-                {var a = [$id, $obrazek]}
+                {var a = [$id, $obrazek->path]}
 
-                  <img src="{$basePath}/images/{$obrazek}" width=100; height=100;>&nbsp;
+                  <img src="{$basePath}/images/{$obrazek->path}" width=100; height=100;>&nbsp;
                   <a n:href="Clanky:smazObrazek (expand) $a">Smazat </a>
                   
                 {/foreach}

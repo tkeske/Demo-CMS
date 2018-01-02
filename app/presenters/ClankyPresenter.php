@@ -9,6 +9,7 @@ namespace App\Presenters;
 use Nette\Application\UI\Form;
 use App\Article;
 use App\Category;
+use App\Obrazek;
 
 
 class ClankyPresenter extends RestrictedPresenter
@@ -64,12 +65,6 @@ class ClankyPresenter extends RestrictedPresenter
                 $file->move($path);
             }
         }
-
-        //existuje jen když je upload
-        //POZOR závisí na tom logika editace
-        if (isset($paths)){
-            $json = json_encode($paths);
-        }
     
         //ověření kategorií
         $cat = $values["kategorie"];
@@ -84,49 +79,27 @@ class ClankyPresenter extends RestrictedPresenter
 
             $id = $this->getParameter('id');
 
-            if ($id){
-                //čekni podle id
-                //větev pro editaci příspěvku
-                $article = $this->em->getRepository("App\Article")->find($id);
-                $article->title = $values["title"];
-                $article->text  = $values["obsah"];
-                $article->slug  = $values["title"];
-                $article->date  = date("d-M-Y");
-                $article->setCategory($h);
+            //vytvoř nebo edituj článek
+            $article = $id ? $this->em->getRepository("App\Article")->find($id) : new Article;
+            $article->title = $values["title"];
+            $article->text  = $values["obsah"];
+            $article->slug  = $values["title"];
+            $article->date  = date("d-M-Y");
+            $article->setCategory($h);
 
-                //zachování existujících obrázků při editaci příspěvku
-                //logika editace
-                if (isset($paths)){
+            //pokud jsou přidej obrázky
+            if(isset($paths)){
 
-                    //získat existující obrázky pokud nějaké jsou
-                    $hlp = json_decode($article->obrazky);
-
-                    if (is_array($hlp)){
-
-                        //merge s novýma uploadama
-                        $e = array_merge($hlp,$paths);
-                        $article->obrazky = json_encode($e);
-                    } else {
-
-                        //větev kdy ještě neexistují žádné obrázky pro příspěvek
-                        //můžeme dát přímo do jsonu
-                        $article->obrazky = json_encode($paths);
-                    }    
+                foreach($paths as $path){
+                    $o = new Obrazek;
+                    $o->path =  $path;
+                    $o->refe = $article;
+                    $arr[] = $o;
                 }
 
-            } else {
-
-                //zcela nový příspěvek
-                $article = new Article;
-                $article->title = $values["title"];
-                $article->text = $values["obsah"];
-                $article->slug  = $values["title"];
-                $article->date  = date("d-M-Y");
-                $article->obrazky = isset($json) ? $json : "";
-                $article->setCategory($h);
+                $article->setObrazy($arr);
             }
 
-            //persistujeme
             $this->em->persist($article);
             $this->em->flush();
 
@@ -135,28 +108,9 @@ class ClankyPresenter extends RestrictedPresenter
     }
 
     public function actionSmazObrazek($id, $obrazek){
-        $article = $this->em->getRepository("App\Article")->find($id);
+        $obrazek = $this->em->getRepository("App\Obrazek")->findBy(array("path" => $obrazek));
 
-        $dec = (array) json_decode($article->obrazky);
-
-        //reindexace pole kvuli nefunkcnimu unsetu
-        foreach($dec as $d =>$v){
-            $xx[] = $v;
-        }
-
-        //vyhledej obrazek v poli
-        $key = array_search($obrazek, $xx);
-
-        //konecne jej vymaz
-        unset($xx[$key]);
-
-        //znovu enkoduj
-        $p = json_encode($xx);
-
-        //persistence
-        $article->obrazky = $p;
-
-        $this->em->persist($article);
+        $this->em->remove($obrazek);
         $this->em->flush();
         $this->redirect('Clanky:Edituj',$id);
     }
@@ -209,7 +163,7 @@ class ClankyPresenter extends RestrictedPresenter
 
     public function actionEdituj($id){
         $article = $this->em->getRepository("App\Article")->find($id);
-        $this->template->obrazky = $article->obrazky;
+        $this->template->obrazy = $article->getObrazy();
         $this->template->id = $id;
  
         if (!$article) {
